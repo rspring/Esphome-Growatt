@@ -1,0 +1,104 @@
+esphome:
+  name: esphome-growatt
+  friendly_name: Growatt
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+  baud_rate: 0
+  
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "keykeykeykeykeykey=="
+
+ota:
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "esphome-growatt"
+    password: "SSw2Oy8kDY3r"
+
+captive_portal:
+    
+
+uart:
+  - id: gw_uart
+    baud_rate: 9600
+    tx_pin: GPIO1
+    rx_pin: GPIO3
+
+modbus:
+  uart_id: gw_uart
+  flow_control_pin: GPIO4
+
+sensor:
+  - platform: growatt_solar
+    update_interval: 10s
+    protocol_version: RTU2
+
+    inverter_status:
+      name: "Status Code"
+
+    phase_a:
+      voltage:
+          name: "Voltage Phase A"
+      current:
+          name: "Current Phase A"
+      active_power:
+          name: "Power Phase A"
+    phase_b:
+      voltage:
+          name: "Voltage Phase B"
+      current:
+          name: "Current Phase B"
+      active_power:
+          name: "Power Phase B"
+    phase_c:
+      voltage:
+          name: "Voltage Phase C"
+      current:
+          name: "Current Phase C"
+      active_power:
+          name: "Power Phase C"
+
+    pv1:
+      voltage:
+          name: "PV1 Voltage"
+      current:
+          name: "PV1 Current"
+      active_power:
+          name: "PV1 Active Power"
+
+    pv2:
+      voltage:
+          name: "PV2 Voltage"
+      current:
+          name: "PV2 Current"
+      active_power:
+          name: "PV2 Active Power"
+
+    active_power:
+      name: "Grid Active Power"
+
+    pv_active_power:
+      name: "PV Active Power"
+
+    frequency:
+      name: "Frequency"
+
+    energy_production_day:
+      name: "Today's Generation"
+
+    total_energy_production:
+      name: "Total Energy Production"
+
+    inverter_module_temp:
+      name: "Inverter Module Temp"
