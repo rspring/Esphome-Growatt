@@ -1,5 +1,5 @@
 # Esphome-Growatt
-Reading Growatt Inverter data via the modbus using an MAX485 TTL to RS485 module and a Wemos D1 Mini
+Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 TTL to RS485 module and a Wemos D1 Mini
 
 ![RS485 board](https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf)
 
