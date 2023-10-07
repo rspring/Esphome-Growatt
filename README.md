@@ -4,9 +4,7 @@ Reading Growat Inverter data via the modbus using an MAX485 TTL to RS485 module 
 ![RS485 board](https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf)
 
 ## Connecting to Growatt Inverter
-You will need a MAX485 TTL to RS485 Converter Module and a Wemos D1 mini (or similar such as ESP32 or ESP2866) and a few female jumper wires. And you'll need to find out which two pins on the Growatt Inverter provide the RS485 modbus communication.
-
-Starting at the Growatt Inverter side you need to find access to RS485 communication port. In the quick guide of my Growatt MIN 6.000TL3-XH inverter I see that the communication cable installation part indicates that pins 3 (green in my setup) and 4 (green/white in my setup) are used for RS485 communication: Pin 3 = RS485A1 and pin 4 = RS485B1.
+You will need a **MAX485 TTL to RS485 Converter Module** and a **Wemos D1 mini** (or similar such as ESP32 or ESP2866) and a few female jumper wires. And you'll need to find out which two pins on the Growatt Inverter communication connector provide the RS485 modbus communication signals. In the quick guide of my Growatt MIN 6.000TL3-XH inverter I see that the _communication cable installation part_ indicates that pin 3 (green in my setup) and pin 4 (green/white in my setup) are used for RS485 communication: Pin 3 = RS485A1 and pin 4 = RS485B1.
 
 ![growatt manual](https://github.com/rspring/Esphome-Growatt/assets/6276750/915d86ba-ba97-40b2-9420-62bad633d7e0)
 
@@ -15,8 +13,7 @@ My inverter came with an empty connector plug including a few ferrule. I just ne
 ![growatt_connector](https://github.com/rspring/Esphome-Growatt/assets/6276750/969e6089-d822-474e-8849-14d03518689c)
 
 ## Connecting to convertor module
-These two wires need to be connected from pin 3 (A) to screw A and pine 4 (B) to screw B on the
-MAX485 TTL to RS485 Converter Module.
+These two wires need to be connected from pin 3 (A) to screw A and pine 4 (B) to screw B on the MAX485 TTL to RS485 Converter Module.
 
 ## Connecting convertor module to Wemos D1 Mini
 The RS485 convertor module is connected with five wires to the Wemos D1 Mini:
