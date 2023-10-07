@@ -34,9 +34,10 @@ and three wires to communicate with the module:
 ![d1mini-1](https://github.com/rspring/Esphome-Growatt/assets/6276750/87d6426e-002a-4a0f-ae9b-995ba46e8681)
 ![module connect](https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8)
 
-
+## Adding new device in ESPHome
 After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a true USB data cable as some charging cables do not support communication. Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. Now it is time to edit the code such that it starts listening to the Growatt Inverter:
 
+## Uploading the Growatt code to the Wemos D1 Mini
 Below is the exact code I use, and here is some explanation of the code first:
 
 esphome: This is just the name of the device
@@ -158,10 +159,13 @@ sensor:
     inverter_module_temp:
       name: "Inverter Module Temp"
 ```
+
+## Connect to Inverter and watch the logging in Home Assistant
 Now connect the thing to the Growatt Inverter and power the D1 mini from a usb charger. Back in Home Assistant's ESPHome page, the tile provides the log function:
 
 ![log](https://github.com/rspring/Esphome-Growatt/assets/6276750/b616bd28-6c85-4dc5-b73f-8ff885e9e7cc)
 
+## Wow! A new ESPHome device is detected in the integrations panel
 This is all the magic to setup the Wemos D1 Mini to listen via the RS458 to TTL module. In Home Assistant's settings -> integration page, the tile ESPhome will now detect the new 'Growatt' device, holding all the sensors:
 
 ![esphome](https://github.com/rspring/Esphome-Growatt/assets/6276750/d6d347d6-78ed-4b00-973b-49f3719210bf)
