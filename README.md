@@ -50,7 +50,7 @@ ota: Is just there such that updates can be done Over-The-Air
 wifi: the wifi credentials the device need to connect with. (the actual credentils are read from my secrets.yaml file)
 
 all the rest is just copied from: https://esphome.io/components/sensor/growatt_solar.html
-```
+```yaml
 esphome:
   name: esphome-growatt
   friendly_name: Growatt
