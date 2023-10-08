@@ -4,16 +4,16 @@ Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 
 ![RS485 board](https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf)
 
 ## Connecting to Growatt Inverter
-You will need a **MAX485 TTL to RS485 Converter Module** and a **Wemos D1 mini** (or similar such as ESP32 or ESP2866) and a few female jumper wires. And you'll need to find out which two pins on the Growatt Inverter communication connector provide the RS485 modbus communication signals. In the quick guide of my Growatt MIN 6.000TL3-XH inverter I see that the _communication cable installation part_ indicates that pin 3 (green in my setup) and pin 4 (green/white in my setup) are used for RS485 communication: Pin 3 = RS485A1 and pin 4 = RS485B1.
+You will need a **MAX485 TTL to RS485 Converter Module** and a **Wemos D1 mini** (or similar such as ESP32 or ESP2866) to read out the modbus of the Growatt inverter. And a few female jumper wires to make the connections. First you'll need to find out which exact two pins on the Growatt Inverter communication socket provide the RS485 modbus communication signals. In the quick guide of my Growatt MIN 6.000TL3-XH inverter I see that the _communication cable installation part_ shows that pin 3 (RS485A1, green in my setup) and pin 4 (RS485B1, green/white in my setup) can be used for RS485 communication.
 
 ![growatt manual](https://github.com/rspring/Esphome-Growatt/assets/6276750/915d86ba-ba97-40b2-9420-62bad633d7e0)
 
-My inverter came with an empty connector plug including a few ferrule. I just needed a crimping tool to connect the two RS485 communication wires to the ferrule and assemble the connection plug. In the photo you see that I also connected pin 1 (+12V) and pin 15 (ground). In a later stage I would like to replace the USB charger plug and power the D1 mini directly from the converter.
+My inverter came with an empty connector plug including a few ferrules. I just needed a crimping tool to connect the two RS485 communication wires to the ferrules and assemble the connection plug. In the photo you can see that I also connected pin 1 (+12V) and pin 15 (ground). In a later stage I would like to replace the USB charger plug and somehow power the D1 mini directly from the converter.
 
 ![growatt_connector](https://github.com/rspring/Esphome-Growatt/assets/6276750/969e6089-d822-474e-8849-14d03518689c)
 
 ## Connecting to convertor module
-These two wires need to be connected from pin 3 (A) to screw A and pine 4 (B) to screw B on the MAX485 TTL to RS485 Converter Module.
+These two wires from pin 3 (A) and pine 4 (B) need to be connected to the two screws labeled A and B on the MAX485 TTL to RS485 Converter Module.
 
 ## Connecting convertor module to Wemos D1 Mini
 The RS485 convertor module is connected with five wires to the Wemos D1 Mini:
@@ -32,7 +32,7 @@ and three wires to communicate with the module:
 ![module connect](https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8)
 
 ## Adding new device in ESPHome
-After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a true USB data cable as some charging cables do not support communication. Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. Now it is time to edit the code such that it starts listening to the Growatt Inverter:
+After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a USB _data_ cable as some cheap USB charging cables don't support data communication. Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. This is the time to edit the code such that it starts listening and reading the Growatt Inverter:
 
 ## Uploading the Growatt code to the Wemos D1 Mini
 Below is the exact code I use, and here is some explanation of the code first:
