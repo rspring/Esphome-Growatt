@@ -1,6 +1,9 @@
 # Esphome-Growatt
 Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 TTL to RS485 module and a Wemos D1 Mini. This setup completely eliminates the need to collect data via the cloud (the Chinese Growatt api servers). Also, it is possible to increase the update frequency of the data. My sensors are updating every 10 sec. The setup is also inexpensive: a few euro's for the D1 Mini, and the MAX458 to TTL module costs less than one euro!
 
+## Links to other sources
+In my example here I am using the standard [ESPHome Growatt](https://esphome.io/components/sensor/growatt_solar.html) integration. As far as I can see it only supports the solar production part, I don't see any sensors that relate to the use of batteries. If the standard ESPHome Growatt integration does not work for you, I suggest you to read the follwoing interesting discussion where an [alternative method for reading the modbus](https://community.home-assistant.io/t/esphome-modbus-growatt-shinewifi-s/369171/51) is proposed by reading values directly from their corrosponding registers. More info about the [Modbus Controller Component](https://esphome.io/components/modbus_controller.html) can be found at the ESPHome site.
+
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf" width="49%">
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/2457af4b-bfa2-47d0-b440-6da30b7d5244" width="49%">
 
@@ -36,6 +39,8 @@ and three wires to communicate with the module:
 - RX (GPIO3) on D1 mini to RO on module (recieve, yellow in my setup)
 - D2 (GPIO4) on D1 mini to RE on module (flow control, orange in my setup)
 
+![wiring](https://github.com/rspring/Esphome-Growatt/assets/6276750/31487c2e-daa0-4733-9dfb-43a3c70509a7)
+
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/87d6426e-002a-4a0f-ae9b-995ba46e8681" width="49%">
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8" width="49%">
 
@@ -48,7 +53,7 @@ _esphome:_ This is just the name of the device.
 
 _esp8266:_ This is automatically filled with the correct board type
 
-_logger:_ Logging via USB must be disabled as it uses the exact same pins we use to communicate with the module. Disabling logging is done by setting its bautrate to zero.
+_logger:_ As hardware serial is used, the logging via USB must be disabled. The serial logging uses the exact same pins we need to communicate with the MAX485TTL to RS485 module. Disabling logging is done by setting its bautrate to zero.
 
 _api:_ The encryption key
 
@@ -65,7 +70,7 @@ esphome:
 esp8266:
   board: esp01_1m
 
-# Enable logging
+# Disable logging
 logger:
   baud_rate: 0
  
