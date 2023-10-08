@@ -165,7 +165,11 @@ sensor:
 ```
 
 ## Connect to Inverter and watch the logging in Home Assistant
-Now connect the thing to the Growatt Inverter and power the D1 mini from a usb charger. Back in Home Assistant's ESPHome page, the tile provides the log function:
+Now connect the thing to the Growatt Inverter and power the D1 mini from a usb charger.
+
+![growatt](https://github.com/rspring/Esphome-Growatt/assets/6276750/85ea86f4-ff61-4082-aca1-b4bee8376fbb)
+
+Back in Home Assistant's ESPHome page, the tile provides the log function:
 
 ![log](https://github.com/rspring/Esphome-Growatt/assets/6276750/b616bd28-6c85-4dc5-b73f-8ff885e9e7cc)
 
