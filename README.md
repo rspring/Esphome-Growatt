@@ -1,7 +1,8 @@
 # Esphome-Growatt
-Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 TTL to RS485 module and a Wemos D1 Mini
+Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 TTL to RS485 module and a Wemos D1 Mini. This setup completely eliminates the need to collect data via the cloud (the Chinese Growatt api servers). Also, it is possible to increase the update frequency of the data. My sensors are updating every 10 sec. The setup is also inexpensive: a few euro's for the D1 Mini, and the MAX458 to TTL module costs less than one euro!
 
-![RS485 board](https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf)
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf" width="49%">
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/2457af4b-bfa2-47d0-b440-6da30b7d5244" width="49%">
 
 ## Connecting to Growatt Inverter
 You will need a **MAX485 TTL to RS485 Converter Module** and a **Wemos D1 mini** (or similar such as ESP32 or ESP2866) to read out the modbus of the Growatt inverter. And a few female jumper wires to make the connections. First you'll need to find out which exact two pins on the Growatt Inverter communication socket provide the RS485 modbus communication signals. In the quick guide of my Growatt MIN 6.000TL3-XH inverter I see that the _communication cable installation part_ shows that pin 3 (RS485A1, green in my setup) and pin 4 (RS485B1, green/white in my setup) can be used for RS485 communication.
@@ -10,13 +11,20 @@ You will need a **MAX485 TTL to RS485 Converter Module** and a **Wemos D1 mini**
 
 My inverter came with an empty connector plug including a few ferrules. I just needed a crimping tool to connect the two RS485 communication wires to the ferrules and assemble the connection plug. In the photo you can see that I also connected pin 1 (+12V) and pin 15 (ground). In a later stage I would like to replace the USB charger plug and somehow power the D1 mini directly from the converter.
 
-![growatt_connector](https://github.com/rspring/Esphome-Growatt/assets/6276750/969e6089-d822-474e-8849-14d03518689c)
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/f2925684-c41a-434d-82b5-99c66e6f948a" width="49%">
 
-## Connecting to convertor module
-These two wires from pin 3 (A) and pine 4 (B) need to be connected to the two screws labeled A and B on the MAX485 TTL to RS485 Converter Module.
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/4a495ea1-2707-4bd1-b569-ee09657c77b1" width="49%">
 
-## Connecting convertor module to Wemos D1 Mini
-The RS485 convertor module is connected with five wires to the Wemos D1 Mini:
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/2fffe42d-2918-4e4f-a3f9-d716ba322246" width="49%">
+
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/ef9ddeac-2b55-4d2f-bae7-e8b89fb250b0" width="49%">
+
+
+## Connecting to MAX485 convertor module
+These two wires from pin 3 (A) and pine 4 (B) must be connected to the two screws labeled A and B on the MAX485 TTL to RS485 Converter Module.
+
+## Connecting the MAX485 convertor module to Wemos D1 Mini
+The RS485 convertor module must be connected to the Wemos D1 Mini using five wires:
 Two wires are used to power the module from the D1 mini:
 
 - 3V3 on D1 mini to VCC on module (orange in my setup)
@@ -28,26 +36,25 @@ and three wires to communicate with the module:
 - RX (GPIO3) on D1 mini to RO on module (recieve, yellow in my setup)
 - D2 (GPIO4) on D1 mini to RE on module (flow control, orange in my setup)
 
-![d1mini-1](https://github.com/rspring/Esphome-Growatt/assets/6276750/87d6426e-002a-4a0f-ae9b-995ba46e8681)
-![module connect](https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8)
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/87d6426e-002a-4a0f-ae9b-995ba46e8681" width="49%">
+<img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8" width="49%">
 
 ## Adding new device in ESPHome
-After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a USB _data_ cable as some cheap USB charging cables don't support data communication. Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. This is the time to edit the code such that it starts listening and reading the Growatt Inverter:
+After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a USB _data_ cable (Be aware that some cheap USB charging cables don't support data communication). Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. This is the time to edit the code such that it starts listening and reading the Growatt Inverter:
 
 ## Uploading the Growatt code to the Wemos D1 Mini
 Below is the exact code I use, and here is some explanation of the code first:
+_esphome:_ This is just the name of the device.
 
-esphome: This is just the name of the device
+_esp8266:_ This is automatically filled with the correct board type
 
-esp8266: is automatically filled with the correct board type
+_logger:_ Logging via USB must be disabled as it uses the exact same pins we use to communicate with the module. Disabling logging is done by setting its bautrate to zero.
 
-logger: To disable logging via USB (it uses the same TX and RX pins) the baud_rate is set to 0
+_api:_ The encryption key
 
-api: an encryption key
+_ota:_ Is just there such that updates can be done Over-The-Air.
 
-ota: Is just there such that updates can be done Over-The-Air
-
-wifi: the wifi credentials the device need to connect with. (the actual credentils are read from my secrets.yaml file)
+_wifi:_ the wifi credentials the device need to connect with. (the actual credentils are read from my secrets.yaml file)
 
 all the rest is just copied from: https://esphome.io/components/sensor/growatt_solar.html
 ```yaml
