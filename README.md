@@ -2,7 +2,10 @@
 Reading Growatt Inverter data into Home Assistant via the modbus using a MAX485 TTL to RS485 module and a Wemos D1 Mini. This setup completely eliminates the need to collect data via the cloud (the Chinese Growatt api servers). Also, it is possible to increase the update frequency of the data. My sensors are updating every 10 sec. The setup is also inexpensive: a few euro's for the D1 Mini, and the MAX458 to TTL module costs less than one euro!
 
 ## Links to other sources
-In my example here I am using the standard [ESPHome Growatt](https://esphome.io/components/sensor/growatt_solar.html) integration. As far as I can see it only supports the solar production part, I don't see any sensors that relate to the use of batteries. If the standard ESPHome Growatt integration does not work for you, I suggest you to read the following interesting discussion where an [alternative method for reading the modbus](https://community.home-assistant.io/t/esphome-modbus-growatt-shinewifi-s/369171/51) is proposed by reading values directly from their corrosponding registers. More info about the [Modbus Controller Component](https://esphome.io/components/modbus_controller.html) can be found at the ESPHome site.
+In my example here I am using the standard [ESPHome Growatt](https://esphome.io/components/sensor/growatt_solar.html) integration. As far as I can see it only supports the solar production part, I don't see any sensors that relate to the use of batteries.
+
+### Battery support
+A [feature request](https://github.com/esphome/feature-requests/issues/2331) for battery support for the ESPHome Growatt component already exists. If the standard ESPHome Growatt integration does not work for you, I suggest you to read the following interesting discussion where an [alternative method for reading Growatt's modbus](https://community.home-assistant.io/t/esphome-modbus-growatt-shinewifi-s/369171/51) is proposed by reading values directly from their corrosponding registers. More info about the [Modbus Controller Component](https://esphome.io/components/modbus_controller.html) can be found at the ESPHome site.
 
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/f4176c70-6b30-460e-a3fc-8b44422396bf" width="49%">
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/2457af4b-bfa2-47d0-b440-6da30b7d5244" width="49%">
@@ -63,25 +66,29 @@ _wifi:_ the wifi credentials the device need to connect with. (the actual creden
 
 all the rest is just copied from: https://esphome.io/components/sensor/growatt_solar.html
 ```yaml
+# Define the name of the ESPHome project
 esphome:
   name: esphome-growatt
   friendly_name: Growatt
 
+# Define the exact board being used
 esp8266:
   board: esp01_1m
 
-# Disable logging
+# Disable hardware serial logging as it conflicts with the serial connection
+# with the MAX485 TTL converter module by setting baud rate to zero
 logger:
   baud_rate: 0
- 
+  
 # Enable Home Assistant API
 api:
   encryption:
-    key: "thekeygoeshere"
+    key: "=heregoestheapikey="
 
+# Enable over the air updates (ota)
 ota:
 
-
+# Define how the device connects to Wifi
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
@@ -91,19 +98,24 @@ wifi:
     ssid: "esphome-growatt"
     password: "SSw2Oy8kDY3r"
 
+# Define a captive portal as fallback in case connecting ti Wifi fails
 captive_portal:
-   
-
+    
+# Define the UART communication settings
+# GPIO1 and GPIO3 are the hardware supported serial TX and RX pins
 uart:
   - id: gw_uart
     baud_rate: 9600
     tx_pin: GPIO1
     rx_pin: GPIO3
 
+# Define the modbus specific settings
 modbus:
   uart_id: gw_uart
   flow_control_pin: GPIO4
 
+# Define the protocol version and the sensors for this device.
+# Old inverters use RTU (default). Newer ones use RTU2 (e.g. MIC, MIN, MAX series)
 sensor:
   - platform: growatt_solar
     update_interval: 10s
@@ -167,6 +179,7 @@ sensor:
 
     inverter_module_temp:
       name: "Inverter Module Temp"
+
 ```
 
 ## Connect to Inverter and watch the logging in Home Assistant
