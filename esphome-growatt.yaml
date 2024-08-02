@@ -19,7 +19,8 @@ api:
 
 # Enable over the air updates (ota)
 ota:
-
+  - platform: esphome
+  
 # Define how the device connects to Wifi
 wifi:
   ssid: !secret wifi_ssid
