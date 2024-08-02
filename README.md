@@ -47,6 +47,8 @@ and three wires to communicate with the module:
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/87d6426e-002a-4a0f-ae9b-995ba46e8681" width="49%">
 <img src="https://github.com/rspring/Esphome-Growatt/assets/6276750/cfba1755-714e-444a-8ed0-c99e878d6ea8" width="49%">
 
+(On the last photo DE and RE are connected. This is not required for this project as data is received only, but I used this module in another project before where it was needed to shorten DE and RE.)
+
 ## Adding new device in ESPHome
 After installing ESPHome in Home Assistant it can be reached via the lefthand menu. Adding a new device is easy, just make sure the Wemos D1 Mini is connected via a USB _data_ cable (Be aware that some cheap USB charging cables don't support data communication). Follow the process of updating the first firmware to the D1 mini. When it is finished a new tile appears in the overview. This is the time to edit the code such that it starts listening and reading the Growatt Inverter:
 
